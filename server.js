@@ -18,7 +18,8 @@ const port = process.env.PORT || 4000;
 const allowedOrigins = [
   "http://localhost:5173", // local dev Vite
   "http://localhost:5174", // local dev alternative
-  "https://analysis-frontend-five.vercel.app" // deployed frontend
+  "https://analysis-frontend-five.vercel.app", // deployed frontend
+  "https://analysis-backend-1-6iqo.onrender.com"
 ];
 
 // Database connect
