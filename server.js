@@ -4,7 +4,6 @@ import cors from "cors";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
-
 import authRouter from "./routes/authRoutes.js";
 import adminRouter from "./routes/admin.routes.js";
 import studentRouter from "./routes/student.routes.js";
@@ -15,6 +14,13 @@ import attendanceRoutes from "./routes/attendanceRoutes.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
+// Allowed origins for CORS
+const allowedOrigins = [
+  "http://localhost:5173", // local dev Vite
+  "http://localhost:5174", // local dev alternative
+  "https://analysis-frontend-five.vercel.app" // deployed frontend
+];
+
 // Database connect
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
@@ -23,20 +29,16 @@ mongoose.connect(process.env.MONGO_URI)
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-
-// CORS setup: allow any localhost + any deployed frontend
 app.use(cors({
   origin: function(origin, callback) {
-    // allow requests with no origin (Postman or server-to-server)
+    // allow requests with no origin (like Postman or server-to-server)
     if (!origin) return callback(null, true);
 
-    // allow localhost
-    if (origin.startsWith("http://localhost")) return callback(null, true);
-
-    // allow all https deployed frontends
-    if (origin.startsWith("https://")) return callback(null, true);
-
-    callback(new Error("Not allowed by CORS"));
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
   },
   credentials: true
 }));
