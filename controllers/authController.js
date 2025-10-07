@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import userModel from "../model/user.js";
+import userModel from "../model/User.js";
 import Student from "../model/Student.js"; 
 
 // REGISTER
